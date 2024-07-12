@@ -19,7 +19,7 @@ public class ProductsServiceTest {
     private ProductRepositories productRepositories;
 
     @InjectMocks
-    private ProductsService productsService;
+    private ProductService productService;
 
     @BeforeEach
     public void setup() {
@@ -28,7 +28,7 @@ public class ProductsServiceTest {
 
     @Test
     public void testGetAllProducts() {
-        productsService.getAllProducts();
+        productService.getAllProducts();
         verify(productRepositories, times(1)).findAll();
     }
 
@@ -38,7 +38,7 @@ public class ProductsServiceTest {
         Products product = new Products(id, "Product1", "Description1", 100.0);
         when(productRepositories.findById(id)).thenReturn(Optional.of(product));
 
-        Optional<Products> result = productsService.getProductsByID(id);
+        Optional<Products> result = productService.getProductsByID(id);
         assertEquals(product.getName(), result.get().getName());
         verify(productRepositories, times(1)).findById(id);
     }
@@ -48,7 +48,7 @@ public class ProductsServiceTest {
         Products product = new Products(null, "Product1", "Description1", 100.0);
         when(productRepositories.save(product)).thenReturn(product);
 
-        Products result = productsService.saveProducts(product);
+        Products result = productService.saveProducts(product);
         assertEquals(product.getName(), result.getName());
         verify(productRepositories, times(1)).save(product);
     }
@@ -62,7 +62,7 @@ public class ProductsServiceTest {
         when(productRepositories.findById(id)).thenReturn(Optional.of(existingProduct));
         when(productRepositories.save(existingProduct)).thenReturn(updatedProduct);
 
-        Products result = productsService.updateProducts(updatedProduct, id);
+        Products result = productService.updateProducts(updatedProduct, id);
         assertEquals(updatedProduct.getName(), result.getName());
         verify(productRepositories, times(1)).findById(id);
         verify(productRepositories, times(1)).save(existingProduct);
@@ -71,7 +71,7 @@ public class ProductsServiceTest {
     @Test
     public void testDeleteProduct() {
         Long id = 1L;
-        productsService.deleteProductsByID(id);
+        productService.deleteProductsByID(id);
         verify(productRepositories, times(1)).deleteById(id);
     }
 

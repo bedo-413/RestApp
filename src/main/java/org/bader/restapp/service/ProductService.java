@@ -9,28 +9,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductsServiceImpl implements ProductsService {
+public class ProductService {
 
     @Autowired
     ProductRepositories productRepositories;
 
-
-    @Override
     public Products saveProducts(Products products) {
         return productRepositories.save(products);
     }
 
-    @Override
+
     public Optional getProductsByID(Long id) {
         return productRepositories.findById(id);
     }
 
-    @Override
+
     public List<Products> getAllProducts() {
         return productRepositories.findAll();
     }
 
-    @Override
     public Products updateProducts(Products products, Long id) {
         Optional<Products> productsToUpdate = productRepositories.findById(id);
         if (productsToUpdate.isPresent()) {
@@ -45,7 +42,6 @@ public class ProductsServiceImpl implements ProductsService {
         return null;
     }
 
-    @Override
     public void deleteProductsByID(Long id) {
         /*if(productRepositories.existsById(id)) {
             productRepositories.deleteById(id);
@@ -57,4 +53,5 @@ public class ProductsServiceImpl implements ProductsService {
         }*/
         productRepositories.deleteById(id);
     }
+
 }

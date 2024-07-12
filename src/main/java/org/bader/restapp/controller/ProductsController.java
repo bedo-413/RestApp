@@ -2,7 +2,7 @@ package org.bader.restapp.controller;
 
 
 import org.bader.restapp.model.Products;
-import org.bader.restapp.service.ProductsService;
+import org.bader.restapp.service.ProductService;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,39 +17,42 @@ import java.util.Optional;
 public class ProductsController {
 
     @Autowired
-    private ProductsService productsService;
+    private ProductService productService;
     @Autowired
     private ReturnTypeParser genericReturnTypeParser;
 
     @GetMapping
     public List<Products> getAllProducts() {
-        return productsService.getAllProducts();
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
     public Optional getProductById(@PathVariable Long id) {
-        return productsService.getProductsByID(id);
+        return productService.getProductsByID(id);
     }
 
     @PostMapping
     public Products createProduct(@RequestBody Products products) {
-        return productsService.saveProducts(products);
+        return productService.saveProducts(products);
     }
 
     @PutMapping("/{id}")
     public Products updateProduct(@PathVariable Long id, @RequestBody Products products) {
-        return productsService.updateProducts(products, id);
+        return productService.updateProducts(products, id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (productsService.getProductsByID(id).isPresent()) {
-            productsService.deleteProductsByID(id);
+        /*if (productService.getProductsByID(id).isPresent()) {
+            productService.deleteProductsByID(id);
             return ResponseEntity.ok().build();
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return null;
+        return null;*/
+
+        productService.deleteProductsByID(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
